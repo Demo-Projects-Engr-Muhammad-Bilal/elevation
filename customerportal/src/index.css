@@ -1,0 +1,58 @@
+/* We are keeping both imports to preserve your exact visual theme, 
+   but we will enforce Hanken Grotesk as the global default below. */
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Hanken+Grotesk:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+
+  /* Enforces a single consistent font family across the entire project for all standard text */
+  html,
+  body {
+    @apply antialiased;
+    font-family: 'Hanken Grotesk', sans-serif !important;
+  }
+
+  /* Preserves your specific display typography without inline overrides */
+  .font-display-lg {
+    font-family: 'Bodoni Moda', serif !important;
+  }
+}
+
+@layer utilities {
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Custom UI Shapes */
+/* .arch-shape {
+  clip-path: path("M0,100 C0,40 40,0 100,0 C160,0 200,40 200,100 L200,400 L0,400 Z");
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+}
+
+.arch-bg {
+  clip-path: path("M0,100 C0,40 40,0 100,0 C160,0 200,40 200,100 L200,400 L0,400 Z");
+  background-color: #8C6A3C;
+  width: 100%;
+  height: 600px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: -1;
+} */
