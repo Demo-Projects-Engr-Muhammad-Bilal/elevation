@@ -38,7 +38,7 @@ export const Navbar = () => {
     if (searchQuery.trim()) {
       navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
       setIsSearchOpen(false);
-      setSearchQuery(''); 
+      setSearchQuery('');
     }
   };
 
@@ -51,17 +51,19 @@ export const Navbar = () => {
   return (
     <header className={`fixed top-0 w-full z-40 transition-all duration-300 ${scrolled ? 'bg-surface/95 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
       <nav className="flex items-center justify-between w-full mx-auto px-margin-mobile md:px-margin-desktop max-w-[1440px]">
-        
+
         <div className="flex items-center gap-4 md:gap-8">
-          <button 
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-            className="flex items-center justify-center transition-colors md:hidden material-symbols-outlined hover:text-secondary"
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            /* 'flex' se hum isay display flex de rahe hain, md:hidden se desktop pe gayab */
+            className="flex items-center justify-center transition-colors md:hidden hover:text-secondary"
           >
-            <span className="material-symbols-outlined mb-1">{isMobileMenuOpen ? 'close' : 'menu'}</span>
+            {/* !flex add kiya taake material-symbols-outlined ka default behavior override ho jaye */}
+            <span className="!flex material-symbols-outlined">{isMobileMenuOpen ? 'close' : 'menu'}</span>
           </button>
-          
+
           <Link to="/" className="text-xl font-extrabold tracking-widest uppercase text-primary">ELÉVATION</Link>
-          
+
           <div className="hidden gap-6 md:flex">
             {navLinks.map((link) => (
               <Link key={link.name} to={link.path} className="transition-colors font-label-caps text-label-caps text-on-surface-variant hover:text-secondary">
@@ -101,9 +103,9 @@ export const Navbar = () => {
       <div className={`absolute top-full left-0 w-full bg-surface/95 backdrop-blur-md overflow-hidden transition-all duration-300 md:hidden ${isMobileMenuOpen ? 'max-h-64 border-b border-outline-variant/30 py-4' : 'max-h-0 py-0'}`}>
         <div className="flex flex-col space-y-4 px-margin-mobile">
           {navLinks.map((link) => (
-             <Link key={link.name} to={link.path} className="text-sm tracking-widest uppercase font-label-caps text-primary">
-               {link.name}
-             </Link>
+            <Link key={link.name} to={link.path} className="text-sm tracking-widest uppercase font-label-caps text-primary">
+              {link.name}
+            </Link>
           ))}
         </div>
       </div>
