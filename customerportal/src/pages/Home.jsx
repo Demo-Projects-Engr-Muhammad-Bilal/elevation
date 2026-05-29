@@ -1,50 +1,45 @@
-import { useState, useEffect } from 'react';
-import { collection, getDocs, query, limit } from 'firebase/firestore';
-import { db } from '../services/firebase';
+import { useHeroSlides } from '../hooks/useHeroSlides';
+import { useCategories } from '../hooks/useCategories';
+import { useProducts } from '../hooks/useProducts';
 
-// Import newly refactored modular components
 import { HeroSlider } from '../components/home/HeroSlider';
 import { QuietLuxury } from '../components/home/QuietLuxury';
+import { CategorySection } from '../components/home/CategorySection';
 import { FeaturedSection } from '../components/home/FeaturedSection';
 import { Newsletter } from '../components/home/Newsletter';
 
+const FEATURED_LIMIT = 8;
+
+const Divider = () => (
+  <hr className="border-t border-black my-12 md:my-24 mx-6 md:mx-21" />
+);
+
 const Home = () => {
-          const [featuredProducts, setFeaturedProducts] = useState([]);
-          const [heroSlides, setHeroSlides] = useState([]);
-          const [loading, setLoading] = useState(true);
+  const { slides } = useHeroSlides();
+  const { categories, loading: loadingCategories } = useCategories();
+  const { products, loading: loadingProducts } = useProducts();
 
-          useEffect(() => {
-                    const fetchHero = async () => {
-                              const snap = await getDocs(collection(db, "hero"));
-                              setHeroSlides(snap.docs.map(d => d.data()));
-                    };
-                    fetchHero();
-          }, []);
+  // Slice featured products from cache — no extra fetch, no window.innerWidth hack
+  const featuredProducts = products.slice(0, FEATURED_LIMIT);
 
-          useEffect(() => {
-                    const fetchFeatured = async () => {
-                              try {
-                                        const q = query(collection(db, "products"), limit(8));
-                                        const querySnapshot = await getDocs(q);
-                                        const products = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                                        setFeaturedProducts(products);
-                              } catch (error) {
-                                        console.error("Error fetching featured products:", error);
-                              } finally {
-                                        setLoading(false);
-                              }
-                    };
-                    fetchFeatured();
-          }, []);
+  return (
+    <main className="overflow-x-hidden">
+      <HeroSlider slides={slides} />
 
-          return (
-                    <main className="overflow-x-hidden">
-                              <HeroSlider slides={heroSlides} />
-                              <QuietLuxury />
-                              <FeaturedSection products={featuredProducts} loading={loading} />
-                              <Newsletter />
-                    </main>
-          );
+      <Divider />
+      <QuietLuxury />
+
+      <Divider />
+      <CategorySection categories={categories} loading={loadingCategories} />
+
+      <Divider />
+      <FeaturedSection products={featuredProducts} loading={loadingProducts} />
+
+      <Divider />
+      <Newsletter />
+      <Divider />
+    </main>
+  );
 };
 
 export default Home;
